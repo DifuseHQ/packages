@@ -3,6 +3,7 @@
 # For details see: https://openwrt.org/docs/guide-user/services/webserver/nginx
 
 worker_processes auto;
+include module.d/*.module;
 
 user root;
 
