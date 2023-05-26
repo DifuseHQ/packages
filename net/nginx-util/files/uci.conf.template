@@ -4,7 +4,6 @@
 # UCI_CONF_VERSION=1.1
 
 worker_processes auto;
-include module.d/*.module;
 
 user root;
 
