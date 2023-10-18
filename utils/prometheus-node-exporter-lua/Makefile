@@ -4,7 +4,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=prometheus-node-exporter-lua
-PKG_VERSION:=2022.08.08
+PKG_VERSION:=2023.07.13
 PKG_RELEASE:=1
 
 PKG_MAINTAINER:=Etienne CHAMPETIER <champetier.etienne@gmail.com>
@@ -103,6 +103,17 @@ define Package/prometheus-node-exporter-lua-hostapd_ubus_stations/install
 	$(INSTALL_BIN) ./files/usr/lib/lua/prometheus-collectors/hostapd_ubus_stations.lua $(1)/usr/lib/lua/prometheus-collectors/
 endef
 
+define Package/prometheus-node-exporter-lua-hwmon
+  $(call Package/prometheus-node-exporter-lua/Default)
+  TITLE+= (hwmon collector)
+  DEPENDS:=prometheus-node-exporter-lua +luci-lib-nixio
+endef
+
+define Package/prometheus-node-exporter-lua-hwmon/install
+	$(INSTALL_DIR) $(1)/usr/lib/lua/prometheus-collectors
+	$(INSTALL_BIN) ./files/usr/lib/lua/prometheus-collectors/hwmon.lua $(1)/usr/lib/lua/prometheus-collectors/
+endef
+
 define Package/prometheus-node-exporter-lua-ltq-dsl
   $(call Package/prometheus-node-exporter-lua/Default)
   TITLE+= (lantiq dsl collector)
@@ -156,6 +167,17 @@ endef
 define Package/prometheus-node-exporter-lua-textfile/install
 	$(INSTALL_DIR) $(1)/usr/lib/lua/prometheus-collectors
 	$(INSTALL_BIN) ./files/usr/lib/lua/prometheus-collectors/textfile.lua $(1)/usr/lib/lua/prometheus-collectors/
+endef
+
+define Package/prometheus-node-exporter-lua-thermal
+  $(call Package/prometheus-node-exporter-lua/Default)
+  TITLE+= (thermal collector)
+  DEPENDS:=prometheus-node-exporter-lua
+endef
+
+define Package/prometheus-node-exporter-lua-thermal/install
+	$(INSTALL_DIR) $(1)/usr/lib/lua/prometheus-collectors
+	$(INSTALL_BIN) ./files/usr/lib/lua/prometheus-collectors/thermal.lua $(1)/usr/lib/lua/prometheus-collectors/
 endef
 
 define Package/prometheus-node-exporter-lua-ubnt-manager
@@ -229,11 +251,13 @@ $(eval $(call BuildPackage,prometheus-node-exporter-lua-bmx7))
 $(eval $(call BuildPackage,prometheus-node-exporter-lua-dawn))
 $(eval $(call BuildPackage,prometheus-node-exporter-lua-hostapd_stations))
 $(eval $(call BuildPackage,prometheus-node-exporter-lua-hostapd_ubus_stations))
+$(eval $(call BuildPackage,prometheus-node-exporter-lua-hwmon))
 $(eval $(call BuildPackage,prometheus-node-exporter-lua-ltq-dsl))
 $(eval $(call BuildPackage,prometheus-node-exporter-lua-nat_traffic))
 $(eval $(call BuildPackage,prometheus-node-exporter-lua-netstat))
 $(eval $(call BuildPackage,prometheus-node-exporter-lua-openwrt))
 $(eval $(call BuildPackage,prometheus-node-exporter-lua-textfile))
+$(eval $(call BuildPackage,prometheus-node-exporter-lua-thermal))
 $(eval $(call BuildPackage,prometheus-node-exporter-lua-ubnt-manager))
 $(eval $(call BuildPackage,prometheus-node-exporter-lua-uci_dhcp_host))
 $(eval $(call BuildPackage,prometheus-node-exporter-lua-wifi))
